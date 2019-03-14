@@ -1,7 +1,7 @@
 package codigos;
 
 class OpenCV {
-	Funcoes funcoes = new Funcoes("lena.png");
+	Funcoes funcoes = new Funcoes("kingsman.jpg");
 	
 	public void main() {
 		
