@@ -1,10 +1,7 @@
 package codigos;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-
 import org.opencv.core.Mat;
+import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class Funcoes {
@@ -21,18 +18,24 @@ public class Funcoes {
 	// abre a imagem original no desktop pra comparação
 	public void abrir_img_original() {
 		
-		abrir_arquivo(getClass().getClassLoader().getResource("resources/"+filename).getPath().substring(1));
+		abrir_arquivo(filename, imagem);
 		
 	}
 	
 	// função para abrir no desktop o arquivo especificado
-	private void abrir_arquivo(String filename) {
-		Desktop desktop = Desktop.getDesktop();
-		try {
-			desktop.open(new File(filename));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void abrir_arquivo(String filename, Mat imagem) {
+		
+		javax.swing.JFrame frame = new javax.swing.JFrame(filename);
+		frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().add(new javax.swing.JLabel(new javax.swing.ImageIcon(HighGui.toBufferedImage(imagem))));
+		frame.pack();
+		frame.setVisible(true);
+		
+	}
+	
+	private void escrever_arquivo(String prefixo, Mat imagem) {
+		System.out.println(String.format("Escrevendo "+ prefixo + filename));
+		Imgcodecs.imwrite(prefixo+filename, imagem);
 	}
 	
 	private double[] converter_grayscale(double[] pixel_entrada) {
@@ -67,6 +70,9 @@ public class Funcoes {
 	}
 	
 	public void escala_cinza() {
+		
+		String filename_prefixo = "gray_";
+		
 		System.out.println("\nRodando Escala de Cinza");
 
 		// percorrerá cada pixel da matriz e aplicará a função de converter para escala de cinza em cada um
@@ -76,13 +82,14 @@ public class Funcoes {
 			}
 		}
 		
-		System.out.println(String.format("Escrevendo gray_%s", filename));
-		Imgcodecs.imwrite("gray_"+filename, imagem);
+		escrever_arquivo(filename_prefixo, imagem);
 		
-		abrir_arquivo("gray_"+filename);
+		abrir_arquivo(filename_prefixo+filename, imagem);
 	}
   
 	public void binarizador(int limiar) {
+		String filename_prefixo = "bin_";
+		
 		System.out.println("\nRodando Binarizador com limiar " + limiar);
 		
 		// percorrerá cada pixel da matriz e aplicará a função de binarizar em cada um
@@ -92,9 +99,8 @@ public class Funcoes {
 			}
 		}
 		
-		System.out.println(String.format("Escrevendo bin_%s", filename));
-		Imgcodecs.imwrite("bin_"+filename, imagem);
+		escrever_arquivo(filename_prefixo, imagem);
 		
-		abrir_arquivo("bin_"+filename);
+		abrir_arquivo(filename_prefixo+filename, imagem);
 	  }
 }

@@ -7,7 +7,8 @@ class OpenCV {
 		
 		funcoes.abrir_img_original();
 		
-		funcoes.zoom_in_quadrado(5);
+		funcoes.zoom_in_quadrado(2);
+		funcoes.zoom_in_linear(2, 'v');
 		
 	}
 }
