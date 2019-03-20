@@ -9,6 +9,7 @@ class OpenCV {
 		
 		funcoes.zoom_in_quadrado(2);
 		funcoes.zoom_in_linear(2, 'v');
+		funcoes.zoom_in_linear(2, 'h');
 		
 	}
 }

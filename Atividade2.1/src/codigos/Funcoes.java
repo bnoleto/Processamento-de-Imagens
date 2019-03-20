@@ -125,23 +125,6 @@ public class Funcoes {
 		for(int linha = 0; linha < img_entrada.rows(); linha++) {
 			for(int coluna = 0; coluna < img_entrada.cols(); coluna++) {
 				
-				// laços para "saltar" e preencher os pixels com base no tamanho_quadrado
-				
-				/*		[i][j]
-				 * 		. -> pixel pré-existente
-				 * 		* -> pixel replicado
-				 * 
-				 * 		tamanho 2
-				 * 		.[0][0] | *[0][1]
-				 * 		*[1][0] | *[1][1]
-				 * 
-				 * 		tamanho 4
-				 * 		.[0][0] | *[0][1] | *[0][2] | *[0][3]
-				 * 		*[1][0] | *[1][1] | *[1][2] | *[1][3]
-				 * 		*[2][0] | *[2][1] | *[2][2] | *[2][3]
-				 * 		*[3][0] | *[3][1] | *[3][2] | *[3][3]	
-				 * 
-				 */
 				for(int i_pixel = 0; i_pixel < tamanho_quadrado; i_pixel++) {
 					for(int j_pixel = 0; j_pixel < tamanho_quadrado; j_pixel++) {
 						img_saida.put(linha*tamanho_v+i_pixel, coluna*tamanho_h+j_pixel, img_entrada.get(linha, coluna));
