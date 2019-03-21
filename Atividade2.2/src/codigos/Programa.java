@@ -1,14 +1,14 @@
 package codigos;
 
 class OpenCV {
-	Funcoes funcoes = new Funcoes("kingsman.jpg");
+	Funcoes funcoes = new Funcoes("lena.png");
 	
 	public void main() {
 		
 		funcoes.abrir_img_original();
 		
-		funcoes.zoom_in_quadrado();
-		funcoes.zoom_in_linear();
+		funcoes.zoom_out_quadrado();
+		funcoes.zoom_out_linear();
 		
 	}
 }

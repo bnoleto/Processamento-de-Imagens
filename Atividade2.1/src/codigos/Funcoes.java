@@ -40,41 +40,19 @@ public class Funcoes {
 		Imgcodecs.imwrite(prefixo+filename, imagem);
 	}
 	
-	public void zoom_in_quadrado(int tamanho_quadrado) {
+	public void zoom_in_quadrado() {
 		
 		String filename_prefixo = "zoom-in_quadrado_";
 		
 		System.out.println("\nAplicando Zoom-in Quadrado");
 		
-		// criará um novo mat com seu tamanho multiplicado pelo tamanho_quadrado
-		Mat img_saida = new Mat(img_entrada.rows()*tamanho_quadrado,img_entrada.cols()*tamanho_quadrado,img_entrada.type());
+		Mat img_saida = new Mat(img_entrada.rows()*2,img_entrada.cols()*2,img_entrada.type());
 
-		// percorrerá cada pixel da matriz e aplicará a função de converter para escala de cinza em cada um
-		for(int linha = 0; linha < img_entrada.rows(); linha++) {
-			for(int coluna = 0; coluna < img_entrada.cols(); coluna++) {
-				
-				// laços para "saltar" e preencher os pixels com base no tamanho_quadrado
-				
-				/*		[i][j]
-				 * 		. -> pixel pré-existente
-				 * 		* -> pixel replicado
-				 * 
-				 * 		tamanho 2
-				 * 		.[0][0] | *[0][1]
-				 * 		*[1][0] | *[1][1]
-				 * 
-				 * 		tamanho 4
-				 * 		.[0][0] | *[0][1] | *[0][2] | *[0][3]
-				 * 		*[1][0] | *[1][1] | *[1][2] | *[1][3]
-				 * 		*[2][0] | *[2][1] | *[2][2] | *[2][3]
-				 * 		*[3][0] | *[3][1] | *[3][2] | *[3][3]	
-				 * 
-				 */
-				for(int i_pixel = 0; i_pixel < tamanho_quadrado; i_pixel++) {
-					for(int j_pixel = 0; j_pixel < tamanho_quadrado; j_pixel++) {
-						img_saida.put(linha*tamanho_quadrado+i_pixel, coluna*tamanho_quadrado+j_pixel, img_entrada.get(linha, coluna));
-					}
-				}
+		for(int linha = 0; linha < img_saida.rows(); linha++) {
+			for(int coluna = 0; coluna < img_saida.cols(); coluna++) {
+							
+				img_saida.put(linha, coluna, img_entrada.get(linha/2, coluna/2));
+
 			}
 		}
 		
@@ -83,58 +61,59 @@ public class Funcoes {
 		abrir_arquivo(filename_prefixo+filename, img_saida);
 	}
 	
-	private double[][][] media_entre_pixels(double[] pixel_pivo, double[] pixel_h, double[] pixel_v, int distancia) {
+	private double[] media_entre_pixels(double[] pixel_1, double[] pixel_2) {
 		
-		double[][][] cjto_pixels = new double[distancia+1][distancia+1][3];
+		double[] pixel_resultado = new double[3];
 		
-		cjto_pixels[0][0] = pixel_pivo;
-		
-		for(int atual = 1; atual <= distancia; atual++) {
-			for(int i = atual; i <= distancia; i++) {
-				for(int j = atual; j <= distancia; j++) {
-				
-					cjto_pixels[i][j][0] = ((pixel_pivo[0]+cjto_pixels[atual][atual][0])/(distancia+1))*i;
-					cjto_pixels[i][j][1] = ((pixel_pivo[1]+cjto_pixels[atual][atual][1])/(distancia+1))*i;
-					cjto_pixels[i][j][2] = ((pixel_pivo[2]+cjto_pixels[atual][atual][2])/(distancia+1))*i;
-				}
-			}
+		for(int i = 0; i<3; i++) {
+			pixel_resultado[i] = (pixel_1[i]+pixel_2[i])/2;	
 		}
 		
-		return cjto_pixels;
+		return pixel_resultado;
 		
 	}
 	
-	public void zoom_in_linear(int tamanho_quadrado, char orientacao) {
+	public void zoom_in_linear() {
 		
 		String filename_prefixo = "zoom-in_linear_";
 		
 		System.out.println("\nAplicando Zoom-in Linear");
-		
-		int tamanho_h = 1, tamanho_v = 1;
-		
-		if(orientacao == 'v') {
-			tamanho_v = tamanho_quadrado;
-		} else if (orientacao == 'h'){
-			tamanho_h = tamanho_quadrado;
-		}
-		
-		// criará um novo mat com seu tamanho multiplicado pelo tamanho_quadrado
-		Mat img_saida = new Mat(img_entrada.rows()*tamanho_v,img_entrada.cols()*tamanho_h,img_entrada.type());
 
-		// percorrerá cada pixel da matriz e aplicará a função de converter para escala de cinza em cada um
+		Mat img_saida = new Mat(img_entrada.rows()*2,img_entrada.cols()*2,img_entrada.type());
+
+		// 1ª passagem - expandir pixels
 		for(int linha = 0; linha < img_entrada.rows(); linha++) {
 			for(int coluna = 0; coluna < img_entrada.cols(); coluna++) {
-				
-				for(int i_pixel = 0; i_pixel < tamanho_quadrado; i_pixel++) {
-					for(int j_pixel = 0; j_pixel < tamanho_quadrado; j_pixel++) {
-						img_saida.put(linha*tamanho_v+i_pixel, coluna*tamanho_h+j_pixel, img_entrada.get(linha, coluna));
-					}
-				}
+				img_saida.put(linha*2, coluna*2, img_entrada.get(linha, coluna));
 			}
 		}
 		
-		escrever_arquivo(filename_prefixo+orientacao+"_", img_saida);
 		
-		abrir_arquivo(filename_prefixo+orientacao+"_"+filename, img_saida);
+		// 2ª passagem - horizontal
+		for(int linha = 0; linha < img_saida.rows(); linha+=2) {
+			for(int coluna = 0; coluna < img_saida.cols()-2; coluna+=2) {
+				
+				img_saida.put(linha, coluna+1, media_entre_pixels(
+						img_saida.get(linha, coluna),
+						img_saida.get(linha, coluna+2)
+						));	
+	
+			}
+		}
+		
+		// 3ª passagem - vertical
+		for(int linha = 0; linha < img_saida.rows()-2; linha+=2) {
+			for(int coluna = 0; coluna < img_saida.cols(); coluna++) {				
+				
+				img_saida.put(linha+1, coluna, media_entre_pixels(
+						img_saida.get(linha, coluna),
+						img_saida.get(linha+2, coluna)
+						));	
+			}
+		}
+		
+		escrever_arquivo(filename_prefixo, img_saida);
+		
+		abrir_arquivo(filename_prefixo+filename, img_saida);
 	}
 }
