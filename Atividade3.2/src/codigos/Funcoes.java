@@ -28,6 +28,25 @@ public class Funcoes {
 		
 		Mat img_saida = new Mat(img_entrada.rows(),img_entrada.cols(),img_entrada.type());
 		
+		Histograma hist_entrada = new Histograma(img_entrada);
+		hist_entrada.show_histograma(filename);
+		
+		int[] hist_saida = new int[256];
+		
+		int somador = 0;
+		int total_pixels = img_entrada.rows()*img_entrada.cols();
+		
+		for(int i = 0; i < 256; i++) {
+			somador += hist_entrada.get_histograma()[i];
+			
+			hist_saida[(int)((double)somador/total_pixels*255)] = hist_entrada.get_histograma()[i];
+			
+		}
+		
+		new Histograma(hist_saida).show_histograma("Saída");
+		
+		
+		
 		for(int linha = 0; linha < img_entrada.rows(); linha++) {
 			for(int coluna = 0; coluna < img_entrada.cols(); coluna++) {
 				
@@ -38,8 +57,7 @@ public class Funcoes {
 			}
 		}
 		
-		new Histograma(img_entrada, filename);
-		new Histograma(img_saida, filename_prefixo+filename);
+		
 		
 		EntradaSaida.escrever_arquivo(filename_prefixo+filename, img_saida);
 		

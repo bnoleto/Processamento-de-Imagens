@@ -5,19 +5,15 @@ import org.opencv.highgui.HighGui;
 
 public class Histograma {
 	
-	int[] qtd_cinza;
+	private int[] qtd_cinza;
+	private Mat img_origem;
+	private Mat grafico_histograma;
 	
-	int maior_cinza = 0;
+	private int maior_cinza = 5000;
 	
-	public Histograma(Mat imagem, String filename) {
-		Mat resultado = new Mat(256,256, org.opencv.core.CvType.CV_8U);
-		
-		System.out.println("Gerando Histograma para " + filename);
-		
+	public Histograma(Mat imagem) {
+
 		qtd_cinza = new int[256];
-		
-		double[] preto = {0,0,0};
-		double[] branco = {255,255,255};
 		
 		for(int linha = 0; linha < imagem.rows(); linha++) {
 			for(int coluna = 0; coluna < imagem.cols(); coluna++) {
@@ -32,23 +28,40 @@ public class Histograma {
 				
 			}
 		}
-
+	}
+	
+	public Histograma(int[] histograma) {
+		this.qtd_cinza = histograma;
+	}
+	
+	public void show_histograma(String filename) {
+		
+		System.out.println("Gerando Histograma para " + filename);
+		
+		double[] preto = {0,0,0};
+		double[] branco = {255,255,255};
+		Mat grafico_histograma = new Mat(256,256, org.opencv.core.CvType.CV_8U);
+		
 //		double qtd_pixels = imagem.rows()*imagem.cols();
 		
 		for(int nivel_cinza = 0; nivel_cinza < 256; nivel_cinza++) {
-			for(int quantidade = 0; quantidade <= resultado.rows(); quantidade++) {
+			for(int quantidade = 0; quantidade <= grafico_histograma.rows(); quantidade++) {
 				
-				if(quantidade < (double)qtd_cinza[nivel_cinza]/maior_cinza*resultado.rows()) {
-					resultado.put(resultado.rows()-quantidade, nivel_cinza, branco);
+				if(quantidade < (double)qtd_cinza[nivel_cinza]/maior_cinza*grafico_histograma.rows()) {
+					grafico_histograma.put(grafico_histograma.rows()-quantidade, nivel_cinza, branco);
 				} else {
-					resultado.put(resultado.rows()-quantidade, nivel_cinza, preto);
+					grafico_histograma.put(grafico_histograma.rows()-quantidade, nivel_cinza, preto);
 				}
 			}
 		}
 		
-		System.out.println(maior_cinza);
+		System.out.println("*Maior cinza: " + maior_cinza);
+		
+		abrir_arquivo(filename+"(histograma)", grafico_histograma);
+	}
 	
-		abrir_arquivo(filename+"(histograma)", resultado);
+	public int[] get_histograma() {
+		return this.qtd_cinza;
 	}
 	
 	private int intensidade(double[] pixel_entrada) {
