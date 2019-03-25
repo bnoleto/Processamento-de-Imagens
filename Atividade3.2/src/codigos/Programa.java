@@ -7,7 +7,7 @@ class OpenCV {
 		
 		funcoes.abrir_img_original();
 		
-		funcoes.inverter_rgb();
+		funcoes.equalizar();
 		
 	}
 }
