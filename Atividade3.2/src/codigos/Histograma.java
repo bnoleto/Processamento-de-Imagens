@@ -6,13 +6,13 @@ import org.opencv.highgui.HighGui;
 public class Histograma {
 	
 	private int[] qtd_cinza;
-	private Mat img_origem;
 	private Mat grafico_histograma;
 	
-	private int maior_cinza = 5000;
+	private int maior_cinza;
 	
 	public Histograma(Mat imagem) {
 
+		maior_cinza = 0;
 		qtd_cinza = new int[256];
 		
 		for(int linha = 0; linha < imagem.rows(); linha++) {
@@ -31,16 +31,24 @@ public class Histograma {
 	}
 	
 	public Histograma(int[] histograma) {
+		maior_cinza = 0;
 		this.qtd_cinza = histograma;
+		
+		// descobrir o maior cinza para montar o gráfico
+		for(int i = 0; i< 256; i++) {
+			if(qtd_cinza[i] > maior_cinza) {
+				maior_cinza = qtd_cinza[i];
+			}
+		}
 	}
 	
-	public void show_histograma(String filename) {
+	public void show_histograma(String titulo) {
 		
-		System.out.println("Gerando Histograma para " + filename);
+		System.out.println("Gerando Histograma para " + titulo);
 		
 		double[] preto = {0,0,0};
 		double[] branco = {255,255,255};
-		Mat grafico_histograma = new Mat(256,256, org.opencv.core.CvType.CV_8U);
+		grafico_histograma = new Mat(256,256, org.opencv.core.CvType.CV_8U);
 		
 //		double qtd_pixels = imagem.rows()*imagem.cols();
 		
@@ -57,7 +65,7 @@ public class Histograma {
 		
 		System.out.println("*Maior cinza: " + maior_cinza);
 		
-		abrir_arquivo(filename+"(histograma)", grafico_histograma);
+		abrir_arquivo(titulo, grafico_histograma);
 	}
 	
 	public int[] get_histograma() {
