@@ -26,8 +26,8 @@ public class Funcoes {
 			
 			double[][] constantes_yiq = {
 					{0.299,  0.587,  0.114},
-					{0.596, -0.275, -0.321},
-					{0.212, -0.523,  0.311}
+					{0.595716, -0.274453, -0.321263},
+					{0.211456, -0.522591,  0.311135}
 			};
 			
 			double[] yiq = new double[3];
@@ -38,7 +38,6 @@ public class Funcoes {
 					
 					//System.out.println("yiq["+i+"] += rgb[" + j + "]*constantes_yiq[" + i + "][" + j + "]");
 				}
-				
 			}
 			
 			return yiq;
@@ -47,9 +46,9 @@ public class Funcoes {
 		private double[] converter_yiq_rgb(double[] yiq) {
 			
 			double[][] constantes_rgb = {
-					{1,  0.956,  0.620},
-					{1, -0.272, -0.647},
-					{1, -1.108,  1.705}
+					{1,  0.9563,  0.621},
+					{1, -0.2721, -0.6474},
+					{1, -1.107,  1.7046}
 			};
 			
 			double[] rgb = new double[3];
@@ -58,7 +57,7 @@ public class Funcoes {
 				for(int j = 0; j< 3; j++) {
 					rgb[i] += yiq[j]*constantes_rgb[i][j];	
 				}
-				
+				rgb[i] = Math.round(rgb[i]);
 			}
 			
 			return rgb;
@@ -79,6 +78,8 @@ public class Funcoes {
 			int somador = 0;
 			int total_pixels = img_entrada.rows()*img_entrada.cols();
 			
+			System.out.println(total_pixels);
+			
 			for(int i = 0; i < 256; i++) {
 				somador += hist_entrada.get_histograma()[i];
 				
@@ -88,9 +89,7 @@ public class Funcoes {
 				
 			}
 			
-			new Histograma(hist_saida).show_histograma("Teste");
-			
-			
+			new Histograma(hist_saida).show_histograma("Hist. Esperado");
 			
 			for(int linha = 0; linha < img_entrada.rows(); linha++) {
 				for(int coluna = 0; coluna < img_entrada.cols(); coluna++) {
@@ -100,8 +99,12 @@ public class Funcoes {
 					
 					pixel_atual = converter_rgb_yiq(pixel_atual);
 					
+					//System.out.print(pixel_atual[0] + "->");
+					
 					// altera o Y (luminosidade) para a nova intensidade relacionada na tabela
 					pixel_atual[0] = tabela_equalizacao[(int) pixel_atual[0]];
+					
+					//System.out.println(pixel_atual[0]);
 					
 					// converte de volta pra RGB
 					pixel_atual = converter_yiq_rgb(pixel_atual);
