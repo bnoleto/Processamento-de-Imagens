@@ -69,27 +69,19 @@ public class Funcoes {
 			
 			Mat img_saida = new Mat(img_entrada.rows(),img_entrada.cols(),img_entrada.type());
 			
-			Histograma hist_entrada = new Histograma(img_entrada);
-			hist_entrada.show_histograma("Entrada");
+			//Histograma hist_entrada = new Histograma(img_entrada);
+			int[] hist_entrada = new int[256];
+			new Histograma(img_entrada).show_histograma("Entrada");
 			
 			int[] hist_saida = new int[256];
 			double[] tabela_equalizacao = new double[256];
 			
-			int somador = 0;
+			
 			int total_pixels = img_entrada.rows()*img_entrada.cols();
 			
 			System.out.println(total_pixels);
 			
-			for(int i = 0; i < 256; i++) {
-				somador += hist_entrada.get_histograma()[i];
-				
-				hist_saida[(int)((double)somador/total_pixels*255)] = hist_entrada.get_histograma()[i];
-				tabela_equalizacao[i] = (int)((double)somador/total_pixels*255);
-				//System.out.println(i + " -> " + (int)((double)somador/total_pixels*255));
-				
-			}
-			
-			new Histograma(hist_saida).show_histograma("Hist. Esperado");
+			//new Histograma(hist_saida).show_histograma("Hist. Esperado");
 			
 			for(int linha = 0; linha < img_entrada.rows(); linha++) {
 				for(int coluna = 0; coluna < img_entrada.cols(); coluna++) {
@@ -98,6 +90,42 @@ public class Funcoes {
 					double[] pixel_atual = img_entrada.get(linha, coluna);
 					
 					pixel_atual = converter_rgb_yiq(pixel_atual);
+					
+					hist_entrada[(int)pixel_atual[0]]++;
+					
+					//System.out.print(pixel_atual[0] + "->");
+					
+					// altera o Y (luminosidade) para a nova intensidade relacionada na tabela
+			//		pixel_atual[0] = tabela_equalizacao[(int) pixel_atual[0]];
+					
+					//System.out.println(pixel_atual[0]);
+					
+					// converte de volta pra RGB
+			//		pixel_atual = converter_yiq_rgb(pixel_atual);
+					
+					img_saida.put(linha, coluna, pixel_atual);
+	
+				}
+			}
+			//Histograma hist_saida = new Histograma(img_saida);
+			
+			int somador = 0;
+			
+			for(int i = 0; i < 256; i++) {
+				somador += hist_entrada[i];
+				
+				tabela_equalizacao[i] = (int)((double)somador/total_pixels*255);
+				//System.out.println(i + " -> " + (int)((double)somador/total_pixels*255));
+				
+			}
+			
+			for(int linha = 0; linha < img_saida.rows(); linha++) {
+				for(int coluna = 0; coluna < img_saida.cols(); coluna++) {
+					
+					// converte de RGB para YIQ
+					double[] pixel_atual = img_saida.get(linha, coluna);
+					
+		//			pixel_atual = converter_rgb_yiq(pixel_atual);
 					
 					//System.out.print(pixel_atual[0] + "->");
 					
@@ -113,6 +141,7 @@ public class Funcoes {
 	
 				}
 			}
+			
 			new Histograma(img_saida).show_histograma("Saída");
 			
 			
