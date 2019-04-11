@@ -5,6 +5,10 @@ public class Pixel {
 	private double x, y;
 	private double[] rgb;
 	
+	Pixel(){
+		
+	}
+	
 	Pixel(int x, int y, double[] cor){
 		this.x = x;
 		this.y = y;

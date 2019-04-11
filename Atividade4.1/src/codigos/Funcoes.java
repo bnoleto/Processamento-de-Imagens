@@ -72,8 +72,10 @@ public class Funcoes {
 		for(int i = 0; i< lista_pixels.size(); i++) {
 			
 			Pixel pixel_atual = lista_pixels.get(i);
-			if(pixel_atual.get_x() >= 0 && pixel_atual.get_y() >= 0) {
+			if(pixel_atual.get_x() >= 0 && pixel_atual.get_y() >= 0 &&
+					pixel_atual.get_x() <= img_entrada.cols() && pixel_atual.get_y() <= img_entrada.rows()) {
 				img_saida.put((int)pixel_atual.get_y(), (int)pixel_atual.get_x(), pixel_atual.get_cor());
+
 			}
 		}
 		

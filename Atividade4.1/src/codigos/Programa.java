@@ -7,6 +7,30 @@ class OpenCV {
 		
 		funcoes.abrir_img_original();
 		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+		funcoes.rotacionar(45);
+
 		funcoes.transladar(150, 150);
 		
 	}
