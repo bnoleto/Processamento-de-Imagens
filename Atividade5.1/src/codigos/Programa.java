@@ -5,11 +5,8 @@ class OpenCV {
 	
 	public void main() {
 		
-//		funcoes.abrir_img_original();
-		/*
-		funcoes.operacao_and();
-		funcoes.operacao_or();
-		*/
+		funcoes.abrir_img_original();
+		funcoes.esqueletizacao();
 		
 	}
 }
