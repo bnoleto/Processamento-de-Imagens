@@ -1,13 +1,15 @@
 package codigos;
 
 class OpenCV {
-	Funcoes funcoes = new Funcoes("lena.png");
+	Funcoes funcoes = new Funcoes("img1.png");
 	
 	public void main() {
 		
-		funcoes.abrir_img_original();
-		funcoes.rotacionar(45);
-		funcoes.transladar(150, 150);
+//		funcoes.abrir_img_original();
+		/*
+		funcoes.operacao_and();
+		funcoes.operacao_or();
+		*/
 		
 	}
 }
