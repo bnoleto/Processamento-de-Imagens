@@ -8,6 +8,7 @@ public class Funcoes {
 	private Mat img_entrada;
 	
 	double[] branco = {255.0,255.0,255.0};
+	double[] vermelho = {0.0,0.0,255.0};
 	double[] preto = {0.0,0.0,0.0};
 	
 	private boolean[][] elemento_estruturante = {
@@ -49,9 +50,20 @@ public class Funcoes {
 	public void esqueletizacao() {
 		boolean[][] img_saida = operacao_esqueletizacao(converter_bool(img_entrada, branco));
 		
-		Mat mat_saida = converter_mat(img_saida, branco, preto);
+		Mat mat_saida = img_entrada.clone();
 		
-		EntradaSaida.abrir_arquivo("saída", mat_saida);
+		for(int i = 0; i < mat_saida.rows(); i++) {
+			for(int j = 0; j < mat_saida.cols(); j++) {
+				if(img_saida[i][j]) {
+					mat_saida.put(i, j, vermelho);	
+				}
+				
+			}
+		}
+		Mat esqueleto = converter_mat(img_saida, branco, preto);
+		
+		EntradaSaida.abrir_arquivo("esqueleto", esqueleto);
+		EntradaSaida.abrir_arquivo("img+esqueleto", mat_saida);
 	}
 	
 	private boolean[][] converter_bool(Mat imagem, double[] cor_primaria){
