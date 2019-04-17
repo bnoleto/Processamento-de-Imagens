@@ -27,6 +27,7 @@ public class Funcoes {
 	
 	int ponto_central = elemento_estruturante.length/2;
 	
+	// função para clonar o mapa de bool da imagem
 	boolean[][] clone (boolean[][] imagem){
 		boolean[][] nova_imagem = new boolean[imagem.length][imagem[0].length];
 		
@@ -48,7 +49,7 @@ public class Funcoes {
 	}
 	
 	public void esqueletizacao() {
-		boolean[][] img_saida = operacao_esqueletizacao(converter_bool(img_entrada, branco));
+		boolean[][] img_saida = esqueletizar(converter_bool(img_entrada, branco));
 		
 		Mat mat_saida = img_entrada.clone();
 		
@@ -149,6 +150,20 @@ public class Funcoes {
 		return qtd;
 	}
 	
+	private boolean[][] esqueletizar(boolean[][] img){
+		
+		boolean[][] erodido = erodir(img);
+		
+		//EntradaSaida.abrir_arquivo("saída", converter_mat(operacao_subtracao(img, abertura(img)), branco, preto));
+		if(qtd_pixels(erodido) > 0) {
+			return operacao_or(operacao_subtracao(img, abertura(img)), esqueletizar(erodido));
+		}
+		
+		
+		return operacao_subtracao(img, abertura(img));
+		
+	}
+	
 	private boolean[][] erodir(boolean[][] img){
 	
 		boolean[][] resultado = new boolean[img.length][img[0].length];
@@ -156,7 +171,7 @@ public class Funcoes {
 		for(int i = 0; i < resultado.length; i++) {
 			for(int j = 0; j < resultado[i].length; j++) {
 				
-				// irá preencher o ponto [i,j] apenas se o elemento estruturante
+				// irá preencher o ponto [i,j] na imagem de resultado apenas se o elemento estruturante
 				// estiver totalmente contido naquela posição
 				resultado[i][j] = elemento_encaixa(img, i, j);
 			}
@@ -169,19 +184,39 @@ public class Funcoes {
 		
 		boolean[][] resultado = clone(img);
 		
+		// A função de dilatação irá "sobrepor" a matriz do elemento estruturante em cada pixel da imagem.
+		// O pixel atual do laço estará com o centro da matriz do elemento estruturante "sobre ele".
+		
+		// laços para percorrer cada pixel da figura
 		for(int i = 0; i < resultado.length; i++) {
 			for(int j = 0; j < resultado[i].length; j++) {
+				
+				// caso o pixel atual da figura seja TRUE
 				if(img[i][j] == true) {
+					
+					// laços para percorrer cada pixel do elemento estruturante, com seu centro no pixel atual da figura
 					for(int i_estruturante = -ponto_central; i_estruturante <= ponto_central; i_estruturante++) {
 						for(int j_estruturante = -ponto_central; j_estruturante <= ponto_central; j_estruturante++) {
+							
+							// Os valores i e j da matriz estruturante irão de -1 a 1(caso a matriz seja 3x3),
+							// para que possibilite a subtração/soma dos índices e verificação dos pixels anteriores
+							// da matriz DA FIGURA logo abaixo.
+							
 							try {
 								
+								// Irá acessar o pixel da FIGURA somado/subtraído à posição atual do elemento estruturante. 
+								// O i e j do elemento estruturante serão somados com o ÍNDICE CENTRAL da matriz,
+								// para que haja a normalização, evitando que se tente acessar um índice negativo.
 								if(img[i+i_estruturante][j+j_estruturante] == false && elemento_estruturante[i_estruturante+ponto_central][j_estruturante+ponto_central] == true) {
-									resultado[i+i_estruturante][j+j_estruturante] = true;	
+									
+									// Caso o pixel atual do elemento estruturante seja TRUE, e esteja "sobreposto" a um pixel FALSE da figura, 
+									// irá armazenar o valor TRUE no pixel atual na figura de resultado, assim fazendo a dilatação.
+									resultado[i+i_estruturante][j+j_estruturante] = true;
+																		
 								}
 								
 							} catch (ArrayIndexOutOfBoundsException e) {
-								// irá ignorar caso o ponto da imagem esteja em algum dos limites
+								// irá ignorar caso o pixel atual esteja fora dos limites da imagem
 							}
 						}
 					}
@@ -200,20 +235,6 @@ public class Funcoes {
 	private boolean[][] fechamento(boolean[][] img){
 			
 			return erodir(dilatar(img));
-	}
-	
-	private boolean[][] operacao_esqueletizacao(boolean[][] img){
-		
-		boolean[][] erodido = erodir(img);
-		
-		//EntradaSaida.abrir_arquivo("saída", converter_mat(operacao_subtracao(img, abertura(img)), branco, preto));
-		if(qtd_pixels(erodido) > 0) {
-			return operacao_or(operacao_subtracao(img, abertura(img)), operacao_esqueletizacao(erodido));
-		}
-		
-		
-		return operacao_subtracao(img, abertura(img));
-		
 	}
 	
 	private boolean[][] operacao_or(boolean[][] img1, boolean[][] img2){
