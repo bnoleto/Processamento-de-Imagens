@@ -154,12 +154,15 @@ public class Funcoes {
 		
 		boolean[][] erodido = erodir(img);
 		
-		//EntradaSaida.abrir_arquivo("saída", converter_mat(operacao_subtracao(img, abertura(img)), branco, preto));
+		// se a quantidade de pixels brancos na img erodida for maior que zero, irá continuar a recursão
 		if(qtd_pixels(erodido) > 0) {
+			
+			// irá subtrair a img de entrada com sua abertura, e chamará recursivamente a próxima etapa de esqueletização,
+			// aplicando a união entre cada etapa recursivamente para retornar a img esqueletizada no final
 			return operacao_or(operacao_subtracao(img, abertura(img)), esqueletizar(erodido));
 		}
 		
-		
+		// senão, apenas retornará a subtração da img com a abertura dela da última etapa e finalizará a recursão
 		return operacao_subtracao(img, abertura(img));
 		
 	}
@@ -238,11 +241,7 @@ public class Funcoes {
 	}
 	
 	private boolean[][] operacao_or(boolean[][] img1, boolean[][] img2){
-		
-		if(img1.length != img2.length || img1[0].length != img2[0].length) {
-			//throw new Exception("Tamanhos das imagens a serem comparadas são diferentes!");
-		}
-		
+
 		boolean[][] img_saida = new boolean[img1.length][img1[0].length];
 		for(int linha = 0; linha < img_saida.length; linha++) {
 			for(int coluna = 0; coluna < img_saida[0].length; coluna++) {
@@ -259,11 +258,7 @@ public class Funcoes {
 	}
 	
 	private boolean[][] operacao_and(boolean[][] img1, boolean[][] img2){
-		
-		if(img1.length != img2.length || img1[0].length != img2[0].length) {
-			//throw new Exception("Tamanhos das imagens a serem comparadas são diferentes!");
-		}
-		
+
 		boolean[][] img_saida = new boolean[img1.length][img1[0].length];
 		for(int linha = 0; linha < img_saida.length; linha++) {
 			for(int coluna = 0; coluna < img_saida[0].length; coluna++) {
@@ -280,10 +275,6 @@ public class Funcoes {
 	}
 	
 	private boolean[][] operacao_subtracao(boolean[][] img1, boolean[][] img2){
-		
-		if(img1.length != img2.length || img1[0].length != img2[0].length) {
-//			throw new Exception("Tamanhos das imagens a serem comparadas são diferentes!");
-		}
 		
 		boolean[][] img_saida = new boolean[img1.length][img1[0].length];
 		
