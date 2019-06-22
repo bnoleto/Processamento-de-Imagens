@@ -1,4 +1,4 @@
-package codigos;
+package codigos.equalizacao;
 
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;

@@ -1,4 +1,4 @@
-package codigos;
+package codigos.equalizacao;
 
 class OpenCV {
 	Funcoes funcoes = new Funcoes("lena.png");
