@@ -7,7 +7,9 @@ class OpenCV {
 	
 	public void main() {
 		
-		funcoes.executar("peixe_poucocontraste.jpg", 27);
+		//funcoes.executar("lena.png");
+		funcoes.executar("lena_modif2.png");
+		funcoes.executar("gray_lena.png");
 		
 	}
 }
