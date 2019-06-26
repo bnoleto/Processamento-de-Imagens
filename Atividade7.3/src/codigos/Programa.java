@@ -7,7 +7,7 @@ class OpenCV {
 	
 	public void main() {
 		
-		funcoes.executar("img3.png");
+		funcoes.executar("slide.png");
 		
 	}
 }

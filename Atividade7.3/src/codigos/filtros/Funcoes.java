@@ -38,9 +38,8 @@ class Semente {
 	private double[] media_rgb;
 	
 	Semente(Mat imagem, double[] cor){
-		Random random = new Random();
 		
-		this.cor = imagem.get(random.nextInt(imagem.cols()), random.nextInt(imagem.rows()));
+		this.cor = cor;
 		
 		calcular_rgb_medio();
 	}
@@ -131,6 +130,21 @@ public class Funcoes {
 		return true;
 	}
 	
+	private boolean existe_cor_sementes(double[] bgr) {
+		
+		if(sementes.isEmpty()) {
+			return false;
+		}
+		
+		for(Semente atual : sementes) {
+			if(comparar_pixels(atual.get_cor(),bgr)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public Mat k_means(Mat imagem, int qtd_sementes) {
 		
 		System.out.println("Quantidade de sementes = " + qtd_sementes);
@@ -141,11 +155,14 @@ public class Funcoes {
 		for(int i = 0; i < qtd_sementes; i++) {
 			
 			Random random = new Random();
-			double[] cor_selecionada = img_entrada.get(random.nextInt(imagem.cols()), random.nextInt(imagem.rows())); 
 			
+			double[] cor_selecionada;
 			
+			do {
+				cor_selecionada = img_entrada.get(random.nextInt(imagem.rows()), random.nextInt(imagem.cols()));
+			} while (existe_cor_sementes(cor_selecionada));
 			
-			sementes.add(new Semente(img_entrada));
+			sementes.add(new Semente(img_entrada,cor_selecionada));
 		}
 
 		int elemento_alterou;
