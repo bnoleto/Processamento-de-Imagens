@@ -17,8 +17,13 @@ public class Funcoes {
 	public void executar(String filename) {
 		this.filename = filename;
 		
-		// irá pegar o caminho da imagem original e usará a função do openCV pra armazenar no Mat
-		imagem_original = Imgcodecs.imread(getClass().getClassLoader().getResource("resources/"+filename).getPath());
+		if(System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+			
+			// workaround para abrir a imagem no windows (evitar ler o caminho como "/C://.../...")
+			imagem_original = Imgcodecs.imread(getClass().getClassLoader().getResource("resources/"+filename).getPath().substring(1));
+		} else {
+			imagem_original = Imgcodecs.imread(getClass().getClassLoader().getResource("resources/"+filename).getPath());
+		}
 		
 		abrir_img_original();
 		

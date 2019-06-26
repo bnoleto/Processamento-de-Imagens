@@ -21,7 +21,7 @@ public class Funcoes {
 		
 		// irá pegar o caminho da imagem original e usará a função do openCV pra armazenar no Mat
 		
-		if(System.getProperty("os.name").toUpperCase() == "WINDOWS") {
+		if(System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
 			
 			// workaround para abrir a imagem no windows (evitar ler o caminho como "/C://.../...")
 			imagem_original = Imgcodecs.imread(getClass().getClassLoader().getResource("resources/"+filename).getPath().substring(1));

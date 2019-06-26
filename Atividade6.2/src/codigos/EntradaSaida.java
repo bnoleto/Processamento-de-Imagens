@@ -6,13 +6,14 @@ import org.opencv.imgcodecs.Imgcodecs;
 
 public class EntradaSaida {
 	
-	// função para abrir no desktop o arquivo especificado
+	// funï¿½ï¿½o para abrir no desktop o arquivo especificado
 	static void abrir_arquivo(String filename, Mat imagem) {
 		
 		javax.swing.JFrame frame = new javax.swing.JFrame(filename);
 		frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(new javax.swing.JLabel(new javax.swing.ImageIcon(HighGui.toBufferedImage(imagem))));
 		frame.pack();
+		frame.setResizable(false);
 		frame.setVisible(true);
 		
 	}

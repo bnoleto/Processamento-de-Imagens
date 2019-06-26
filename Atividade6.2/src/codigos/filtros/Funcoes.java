@@ -1,12 +1,10 @@
 package codigos.filtros;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.osgi.OpenCVInterface;
 
 public class Funcoes {
 	private Mat img_entrada;
