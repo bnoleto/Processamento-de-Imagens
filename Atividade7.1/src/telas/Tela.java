@@ -32,6 +32,10 @@ public class Tela extends JFrame {
 		label_imagem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
+				
+				// por algum motivo o evento do mouse está passando X quando deveria ser Y
+				// e vice-versa, troquei os 2 e por algum motivo funcionou
+				
 				filtros.pintar(imagem, arg0.getY(), arg0.getX(), filtros.random_rgb());
 				
 				label_imagem.setIcon(

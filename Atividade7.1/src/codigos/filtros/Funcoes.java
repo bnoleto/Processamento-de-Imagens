@@ -58,13 +58,10 @@ public class Funcoes {
 		
 		} catch (StackOverflowError e) {
 			
+			// comentar a linha abaixo para ver em qual momento começou a dar estouro de pilha
+			e.notify();
+
 			
-			/*
-			buffer.add(new Coordenada(x,y));
-			buffer.add(new Coordenada(x-1,y));
-			buffer.add(new Coordenada(x+1,y));
-			buffer.add(new Coordenada(x,y-1));
-			buffer.add(new Coordenada(x,y+1));*/
 		}
 	}
 
