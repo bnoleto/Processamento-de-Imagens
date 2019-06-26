@@ -1,5 +1,7 @@
 package codigos.filtros;
 
+import java.util.Scanner;
+
 import org.opencv.core.Mat;
 
 public class Funcoes {
