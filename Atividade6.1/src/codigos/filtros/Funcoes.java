@@ -23,14 +23,6 @@ public class Funcoes {
 			{-1,0,1},
 	};
 
-	
-	public Funcoes() {
-		
-		// irá pegar o caminho da imagem original e usará a função do openCV pra armazenar no Mat
-		
-		
-	}
-	
 	private int calcular_R(int x, int y, double[][] matriz) {
 		
 		int r = 0;
@@ -41,7 +33,7 @@ public class Funcoes {
 					r += ((img_entrada.get(x+i, y+j)[0]+
 							img_entrada.get(x+i, y+j)[1]+
 							img_entrada.get(x+i, y+j)[2])/3)*matriz[i+1][j+1]; 	// pegará escala de cinza e multiplicará
-																				// pelo respectivo valor da matriz
+																				// pelo respectivo valor da matriz R atual
 				} catch (NullPointerException e) {
 					// irá ignorar o passo caso esteja nas bordas da imagem
 				}

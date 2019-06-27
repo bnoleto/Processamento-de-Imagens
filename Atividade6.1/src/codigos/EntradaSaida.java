@@ -6,7 +6,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 
 public class EntradaSaida {
 	
-	// fun��o para abrir no desktop o arquivo especificado
+	// função para abrir no desktop o arquivo especificado
 	static void abrir_arquivo(String filename, Mat imagem) {
 		
 		javax.swing.JFrame frame = new javax.swing.JFrame(filename);

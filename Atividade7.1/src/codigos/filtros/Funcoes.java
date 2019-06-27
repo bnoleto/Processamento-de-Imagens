@@ -8,14 +8,11 @@ public class Funcoes {
 	Mat img_entrada;
 	private boolean[][] matriz_preenchimento;
 	private double[] cor_original;
-
-	public Funcoes() {
-		
-		// irá pegar o caminho da imagem original e usará a função do openCV pra armazenar no Mat
-		
-	}
 	
 	public double[] random_rgb() {
+		
+		// irá retornar um RGB aleatório
+		
 		Random random = new Random();
 		
 		double[] bgr = new double[3];
@@ -28,6 +25,9 @@ public class Funcoes {
 	}
 	
 	private void preencher(int x, int y) {
+		
+		// método recursivo para preencher o pixel atual (x,y) e de seus vizinhos,
+		// caso a cor deles seja a mesma cor do pixel inicialmente selecionado
 		
 		try {
 		
@@ -42,6 +42,7 @@ public class Funcoes {
 				return;
 			}
 			
+			// se a cor do pixel atual for igual à cor selecionada
 			if(comparar_pixels(img_entrada.get(x,y), cor_original)) {
 				
 				// pintará o pixel da imagem de saída com a cor caso a cor do pixel atual corresponda à cor da imagem original
@@ -58,7 +59,7 @@ public class Funcoes {
 		
 		} catch (StackOverflowError e) {
 			
-			// comentar a linha abaixo para ver em qual momento começou a dar estouro de pilha
+			// comentar a linha abaixo para ver na imagem em qual momento começou a dar estouro de pilha
 			e.notify();
 
 			
@@ -68,11 +69,17 @@ public class Funcoes {
 	
 	public void pintar(Mat imagem, int x, int y, double[] cor) {
 		
-		System.out.println("X = " + x+", Y = " + y);
+		// *observação: a função do MouseEvent do java está passando X e Y trocados
+		
+		// *observação 2: ao pintar uma região grande, provavelmente vai dar stack
+		// overflow por 2 vezes, mas pintará normalmente depois disso
+		
+		System.out.println("X = " + y+", Y = " + x);
 		
 		img_entrada = imagem;
 		
-		
+		// foi usada uma matriz de boolean para evitar de aplicar a função de put do OpenCV diretamente
+		// no Mat em funções recursivas, numa tentativa de otimizar o processamento
 		matriz_preenchimento = new boolean[imagem.rows()][imagem.cols()];
 		cor_original = imagem.get(x, y);
 		
@@ -91,6 +98,9 @@ public class Funcoes {
 	}
 	
 	private boolean comparar_pixels (double[] pixel1, double[] pixel2) {
+		
+		// irá verificar se 2 pixels possuem a mesma cor
+		
 		for(int i =0; i< 3; i++) {
 			if(pixel1[i] != pixel2[i]) {
 				return false;

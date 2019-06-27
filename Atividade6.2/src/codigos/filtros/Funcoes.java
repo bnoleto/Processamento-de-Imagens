@@ -12,16 +12,10 @@ public class Funcoes {
 	double[] branco = {255.0,255.0,255.0};
 	double[] vermelho = {0.0,0.0,255.0};
 	double[] preto = {0.0,0.0,0.0};
-
 	
-	public Funcoes() {
+	private int calcular_luminosidade_media(int x, int y) {
 		
-		// irá pegar o caminho da imagem original e usará a função do openCV pra armazenar no Mat
-		
-		
-	}
-	
-	private int calcular_media(int x, int y) {
+		// irá calcular a média de luminosidade do pixel atual + todos os vizinhos
 		
 		int qtd_pixels = 0;
 		int soma = 0;
@@ -45,6 +39,8 @@ public class Funcoes {
 	
 	private Mat converter_para_hsl(Mat imagem) {
 		
+		// converterá a imagem de RGB para HSL
+		
 		Mat img_saida = new Mat(imagem.rows(), imagem.cols(), imagem.type()); 
 		
 		Imgproc.cvtColor(imagem, img_saida, Imgproc.COLOR_BGR2HLS);
@@ -55,6 +51,8 @@ public class Funcoes {
 	
 	private Mat converter_para_rgb(Mat imagem) {
 		
+		// converterá a imagem de HSL para RGB
+		
 		Mat img_saida = new Mat(imagem.rows(), imagem.cols(), imagem.type()); 
 		
 		Imgproc.cvtColor(imagem, img_saida, Imgproc.COLOR_HLS2BGR);
@@ -64,6 +62,8 @@ public class Funcoes {
 	}
 	
 	private double[] substituir_luminosidade(double[] hsl, double nova_lum) {
+		
+		// irá pegar um pixel em HSL, e substituirá o seu valor de luminosidade pelo valor especificado por nova_lum 
 		
 		double[] novo_hsl = new double[3];
 		
@@ -77,6 +77,9 @@ public class Funcoes {
 	}
 	
 	public Mat media(Mat imagem) {
+		
+		// função principal do filtro de média
+		
 		img_entrada = imagem;
 		
 		Mat img_saida = converter_para_hsl(imagem);
@@ -85,7 +88,7 @@ public class Funcoes {
 			for(int j = 0; j < img_entrada.cols(); j++) {
 				double[] pixel_atual = img_saida.get(i, j);
 				
-				img_saida.put(i, j, substituir_luminosidade(pixel_atual, calcular_media(i, j)));
+				img_saida.put(i, j, substituir_luminosidade(pixel_atual, calcular_luminosidade_media(i, j)));
 			}
 		}
 		
@@ -93,6 +96,8 @@ public class Funcoes {
 	}
 	
 	private double obter_elemento_mediano(int x, int y) {
+		
+		// irá ordenar os pixels por sua luminosidade de modo crescente e retornará o elemento posicionado na mediana da lista
 
 		ArrayList<Double> elementos = new ArrayList<Double>();
 
@@ -120,6 +125,9 @@ public class Funcoes {
 	}
 	
 	public Mat mediana(Mat imagem) {
+		
+		// função principal do filtro de mediana
+		
 		img_entrada = imagem;
 		
 		Mat img_saida = converter_para_hsl(imagem);

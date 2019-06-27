@@ -37,9 +37,10 @@ public class Funcoes {
 		
 		codigos.filtros.Funcoes filtros = new codigos.filtros.Funcoes();
 		
-		Random random = new Random();
-		Mat imagem_saida = filtros.k_means(imagem_original, random.nextInt(51));
-		//Mat imagem_saida = filtros.k_means(imagem_original, 20);
+		/*Random random = new Random();
+		Mat imagem_saida = filtros.k_means(imagem_original, random.nextInt(51));*/
+		
+		Mat imagem_saida = filtros.k_means(imagem_original, 20);
 		
 		abrir_img(filename);
 		abrir_img("1. K-means", imagem_saida);
